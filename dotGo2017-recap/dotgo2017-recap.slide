@@ -45,7 +45,7 @@ Liveblog:
 
 * Sameer Ajmani: "Simulating a Real-World System in Go"
 .image 26508938819_6e8b33789c_k.jpg _ 480
-- Coffee Shop example 
+- Coffee Shop example, [[https://speakerdeck.com/sajmani/simulating-a-real-world-system-in-go][Slides]]
 : rich with neologisms: "Brewput" and "Cafe-au-Laitency"
 - How to achieve service performance with concurrency channels
 - Thoughtfully illustrated, very well explained
@@ -115,7 +115,7 @@ Liveblog:
 - Ron Evans: "gocv.io"
 - Laurent Leveque: "Using Go on Android and Python"
 - Diana Ortega: "Go in Data Science"
-- Mickael Remond: "Go for real time streaming architectures"
+- Mickaël Rémond: "Go for real time streaming architectures" ([[https://www.slideshare.net/mremond/go-for-real-time-streaming-architectures-dotgo-2017][Slides]]
 - Marcel van Lohuizen: "Rethinking errors in Go"
 : Android and python: goprotopy tool to generate byndings []byte -> []byte
 : Data science: What to use, where to get help (gonum, gopherdata.io)
