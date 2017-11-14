@@ -1,0 +1,215 @@
+dotGo 2017 Recap
+Presented 11th Rhein-Main Gophers Meetup
+19:00 14 Nov 2017
+
+Fabian Wickborn
+fabian@wickborn.net
+@foxwhizz
+
+All image material is used [[https://twitter.com/foxwhizz/status/928684570349920256][by kind permission of dotConferences]].
+Gophers based on designs by [[https://github.com/ashleymcnamara/gophers][Ashley McNamara]] and inspired 
+by [[https://www.youtube.com/watch?v=4rw_B4yY69k][Renee French]].
+
+: Hi my name is ...  / I attended .go last week 
+: This talk is meant a very brief overview, meant to raise your interest in learning more about the talk. I cannot live to the real talks, even less so in 20 minutes.
+: It's just a Heads Up, Be on the Lookout
+: This talk is very last-minute, so links to slides are generally missing. I hope I can add these later.
+
+* dotGo 2017, 6th November 2017
+
+: Fourth issue of dotGo franchise
+: Again in this beautiful theatre in the middle of Paris
+: 800 attendees, sold out for the first time
+
+.image 26508940519_dcb3bd5850_k.jpg 500 _
+
+: Plush Gophers (!) and "Le Gopher"
+: 10 talks and 2 Lightning Talk sessions, 10 Lightning Talks 
+
+: What I really like: dotGo is live: 3 live coding talks (vscode), live sketching (yay!), a lot of breaks, chances to meet, etc.
+
+* dotGo Persistent Resources
+
+Videos:
+
+- All talks have been recorded
+- The videos are supposed to hit Youtube next week
+- Here's hoping that the interviews will be in the recording
+: Usually the videos only contain the talk
+
+Liveblog:
+.link https://about.sourcegraph.com/go/ Sourcegraph wrote a liveblog
+- Much better recap than this silly 20 minute talk
+- More images and code samples
+: In the next slides I will introduce the speakers and very briefly summarize what they talked about and what I liked about that talk.
+
+* Sameer Ajmani: "Simulating a Real-World System in Go"
+.image 26508938819_6e8b33789c_k.jpg _ 480
+- Coffee Shop example 
+: rich with neologisms: "Brewput" and "Cafe-au-Laitency"
+- How to achieve service performance with concurrency channels
+- Thoughtfully illustrated, very well explained
+
+* John Cinnamond:  "Go Lift"
+.image 37573612044_beecb14f5e_k.jpg _ 600
+	if err != nil {  // How can these ubiquitous lines be avoided?
+		return err 
+	}
+: John: Polyglot, ruby, haskell
+: Humourous!
+: How to avoid the ubiquituos three error lines
+: Lift the behaviour into a type
+
+* Matt Ryer: "The Art Of Testing"
+.image 37573610674_f7d1a29900_k.jpg _ 600
+: From London
+: Took the slot intended for Jessica Frazelle (@jessfraz), Upgraded his Lightning Talk
+: I enjoyed his talk very much
+: He agreed to speak via Skype/Hangout etc. at one of our next meetups!!!!
+- How to test stuff (and how not to!)
+- Introduced two of his packages [[https://github.com/matryer/is]] and [[https://github.com/matryer/moq]]
+
+* Bill Kennedy - Behaviors of Channel
+.image 38284320481_ad57a61ba3_k.jpg _ 600
+
+: Bill trains Go for a living
+: Live coding to illustrate the "drop pattern"
+: Used vscode
+: Illustrated how program failed if log could not be written
+
+	select { 
+	case l.ch <- s:         // I want to write a log string s
+	default:                // I cannot move on correctly? 
+		fmt.Println("DROP") // Well, than I just ignore this here.
+	}
+
+
+* Lightning Talk Session 1
+
+.image lightningtalks1.jpg  _ 1000
+- Daniel Marti: goreduce
+- Jaime Silveva: "Handling slow requests"
+- Fabio Rapposelli: "What Would Henry Rollins Do?" (Licenses)
+- Pascal Costanza: "DNA Sequencing using Go"
+- Massimillano Pippi: "Embedding cpython in Go"
+: Pippi: "experience report", lock goroutine to thread and CPU core
+: Next slide is from fabio rapposellis talk 
+: "So you come in to work in the morning, and you start hacking, writing enormous amounts of Go code, saving the world"
+
+* Best slide of the conf
+
+.image rambo-cat-riding-rainbow-unicorn.jpg 550 _
+
+* Cindy Sridharan: "Unmasking netpoll.go"
+.image 38229657746_28321493a1_k.jpg _ 600
+- What's under the hood when you `ListenAndServe()`
+- Great technical talk with a lot of details
+- [[https://medium.com/@copyconstruct/the-method-to-epolls-madness-d9d2d6378642][Blog post 1]] and [[https://medium.com/@copyconstruct/nonblocking-i-o-99948ad7c957][Blog post 2]], [[https://t.co/TARqxOm4er][Slides]]
+: Hand-crafted slides looked beautiful
+: If you are into the details of networks and system programming, this talk is for you
+: Blog entry and slides are available
+
+
+* Lightning Talk Session 2
+.image lightningtalks1.jpg  _ 1000
+- Ron Evans: "gocv.io"
+- Laurent Leveque: "Using Go on Android and Python"
+- Diana Ortega: "Go in Data Science"
+- Mickael Remond: "Go for real time streaming architectures"
+- Marcel van Lohuizen: "Rethinking errors in Go"
+: Android and python: goprotopy tool to generate byndings []byte -> []byte
+: Data science: What to use, where to get help (gonum, gopherdata.io)
+: Rethinking errors: Yet another error handling packages
+
+
+* JBD: "Go's Work Stealing Scheduler"
+.image 38229672736_2e8d59237f_k.jpg _ 600
+- Internals on how goroutines are scheduled over OS threads
+- `go tool trace` is the best debug tool for this
+: minimize context switches, utilize CPU at the fullest
+: runtime prefers to burn CPU cycles instead of preemption
+: scheduler is work-stealing, it takes threads from other processors
+
+* Francesc Campoy: "Machine Learning and Go"
+.image 37573581494_7a2d7039d3_k.jpg _ 600
+- "How to do machine learning in Go, and why not to do it."
+: francesc works four sourced now (marchine learning on source code)
+: matrix library with non-mutable data structures
+: exploiting go concurrency he got faster and faster, a bit similar to sameers talk earlier that day
+
+* Liz Rice: "Debuggers from Scratch"
+.image 24413574028_c6c7265b55_k.jpg _ 600
+- The queen of livecoding makes complicated stuff appear easy
+- She wrote a debugger live on stage [[https://github.com/lizrice/debugger-from-scratch][and published the source]]
+: earlier wrote containers in Go in 20 minutes, same goes for syscalls
+: Stopping at breakpoints, identifying the current program line, created a backtrace
+: by the power of `debug/gosym` 
+
+
+* Brian Ketelsen: "Preparing for the Next Wave"
+.image 38229650546_dfbf4e9d4b_k.jpg _ 600
+- Make the ecosystem ready for enterprise developers.
+- Create opinionated frameworks to ease their entry
+- Announces [[https://gopher.rocks/commons][gopher.rocks/commons]] and [[https://learn-golang.com][learn-golang.com]]
+: Most keynote'y talk of the conf IMHO, MUST WATCH FOR ANY JAVA DEV
+: "Big companies are making huge investments into Go."
+: Developers in companies with tens of thousands employees
+: "If you like it or not, the Enterprise Developers are coming."
+: Identified where Go is still lacking when compared to .NET and Hava
+: Learn-Golang community-translated book, commons library like Apache Commons
+
+* Sam Boyer: "The Functional Design of Dep"
+.image 38229674776_14af2b3515_k.jpg _ 600
+
+- Memoization (result caching) to speed things up
+- In the case of a dependency manager, cache the results of version solver
+: How to apply the Big Picture when designing systems
+: IMHO should have come directly after John Cinnamonds talk
+
+* Around the conference
+
+Sunday:
+
+- gobot.io Workshop
+- Gathering of Internation Gophers 2
+
+After-show:
+
+- After-show party: O'Sullivans by the mill (again)
+- I had a nice chat with some of the speakers
+: Mat Ryer, John Cinnamond, Francesc Campoy
+: Mat agreed to speak at one of our meetups
+: Francesc would do it too, if we ask him nicely.
+
+Tuesday, Wednesday, ...:
+
+- Go workshop with Bill Kennedy
+- Women Who Go Paris meetup with Brian and Francesc
+
+* dotGo 2018
+
+Yeah, that's not going to happen. Sorry.
+
+* dotGo 2019
+
+dotConferences is shifting the annual cycle by six months. 
+
+Next issue is *March*25th,*2019*.
+
+You can already register:
+.link https://2019.dotgo.eu/ https://2019.dotgo.eu/
+
+Currently the ticket is €119 (incl. VAT).
+
+: four hours by train from Frankfurt to central Paris (TGV, ICE)
+: 98 euros for a first class ticket if you book early (without BahnCard)
+: 120 euros 
+
+* Just Go.
+
+It's probably the Go conference closest to Frankfurt. And Paris is even more beautiful in spring, anyway. 
+
+.image jardin-du-luxembourg.jpg _ 500
+
+.image discover-paris.jpg _ 600
+
