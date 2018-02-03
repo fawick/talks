@@ -1,0 +1,112 @@
+Automate Git Repository Bisection with Go Test
+FOSDEM 2018 Go Devroom
+19:00 03 Feb 2018
+
+Fabian Wickborn
+fabian@wickborn.net
+@foxwhizz
+
+* Prologue
+
+That's how I remember my _very_ huge codebase. 
+
+    func canDo() bool {
+        return true
+    }
+
+* Prologue
+
+I just found out that there is a bug in my codebase.
+
+    func canDo() bool {
+        return false
+    }
+
+"I am sure"™ it wasn't in there a long time ago.
+
+My tests only cover the bugs I could think of before.
+
+The bug could be in any of a gazillion commits since I wrote `canDo()`.
+
+* git bisect  
+
+- My weapon of choice for hunting regression bugs.
+- Mark a good and a bad commit 
+    $ git bisect start
+    $ git bad master
+    $ git good <initial rev>
+- Git chooses the next commits, until you catch "The One"
+
+    Bisecting: 49 revisions left to test after this (roughly 6 steps)
+    [df2b85a1830c19166773602f55b598be005f29ee] Bazing the foo thingy
+
+
+- I usually perform a manual test and either choose 
+
+    $ git bisect bad
+
+or
+
+    $ git bisect good
+
+* Easy to automate
+
+- Create a new Go test `TestMyRegression` to check for the bug 
+- Put it an dedicated `_test.go` file
+
+
+    func TestCanDo(t *testing.T) {
+        if !canDo() {
+            t.Fail()
+        }
+    }
+
+
+- Do not commit that file to the repo (just yet)!
+
+* 
+
+Start as usual
+
+    $ git bisect start
+    $ git bad master
+    $ git good <initial rev>
+
+* 
+
+Then let `git bisect run`work it's magic. 
+
+    $ git bisect run go test -run MyRegression
+
+    running go test -run Regression
+    --- FAIL: TestCanDo (0.00s)
+    FAIL
+    exit status 1
+    FAIL	github.com/fawick/bisect	0.001s
+    Bisecting: 24 revisions left to test after this (roughly 5 steps)
+    [2a313c7d091e6cffa85a03e13c19c09d3408d7f0] Timey-Wimey Wibbly-Wobbly
+    running go test -run CanDo
+    PASS
+    [...]
+    PASS
+    ok  	github.com/fawick/bisect	0.001s
+    c0f3de8310602dfa40b40c67d7fec9a55c3bc251 is the first bad commit
+    commit c0f3de8310602dfa40b40c67d7fec9a55c3bc251
+    Author: Fabian Wickborn <fabian@wickborn.net>
+    Date:   Sat Feb 3 11:52:02 2018 +0100
+
+        Setting constants for time and relative dimensions in space
+
+* What on Earth Have I done?
+
+    $ git show c0f3de8310602dfa40b40c67d7fec9a55c3bc251
+
+     func canDo() bool {
+    -       return true
+    +       return false
+     }
+    
+Bingo!
+
+Commit the test to catch a regression early from now on.
+
