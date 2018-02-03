@@ -14,9 +14,13 @@ That's how I remember my _very_ huge codebase.
         return true
     }
 
+: Learned a little trick a while ago. It helped me, maybe it helps you, too.
+: There is solid chance that nothing in this talk is new to you. Sorry.
+: Google did not give many hits on it, yet. 
+
 * Prologue
 
-I just found out that there is a bug in my codebase.
+I just found out that nowadaye there is a bug lately.
 
     func canDo() bool {
         return false
@@ -26,7 +30,7 @@ I just found out that there is a bug in my codebase.
 
 My tests only cover the bugs I could think of before.
 
-The bug could be in any of a gazillion commits since I wrote `canDo()`.
+The bug could be in any of a gazillion commits since I first wrote `canDo()`.
 
 * git bisect  
 
@@ -61,6 +65,8 @@ or
         }
     }
 
+: Go's intrinsic testing really helps a lot here. All you need is Git and Go
+
 
 - Do not commit that file to the repo (just yet)!
 
@@ -75,6 +81,10 @@ Start as usual
 * 
 
 Then let `git bisect run`work it's magic. 
+
+: git bisect run expects Exit Code 0 for a good commit, and 1-127 (expect 125) for a bad commit. 
+: go test used 0 for PASS and 1 for FAIL.
+: So that's a valid match. Here we go:
 
     $ git bisect run go test -run MyRegression
 
