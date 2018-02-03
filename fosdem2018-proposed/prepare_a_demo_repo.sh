@@ -8,16 +8,24 @@ func canDo() bool {
 }
 EOF
 
+
 git add bisect.go
 git commit -m "Initial commit"
 git tag initialCommit
-for i in $(seq 1 41); do echo -e "// comment $i\n" >> bisect.go; git commit -a -m "Commit $i" ; done
+
+MAX=1000
+
+# hide the bug in a random commit of 10000
+rand=$(echo "$RANDOM%$MAX"|bc)
+
+for i in $(seq 1 $(($rand-1))); do echo -e "// comment $i\n" >> bisect.go; git commit -a -m "Commit $i" ; done
 sed -i 's/true/false/' bisect.go
 git add bisect.go
-git commit -m "Commit 42"
-for i in $(seq 43 100); do echo -e "func Foo$i() int {return $i}\n" >> bisect.go; git commit -a -m "Commit $i" ; done
+git commit -m "Commit $rand" -m "Spoiler alert, this is the bad commit"
+for i in $(seq $(($rand+1)) $MAX); do echo $i; echo -e "func Foo$i() int {return $i}\n" >> bisect.go; git commit -a -m "Commit $i" ; done
 
 
+# automate the search for the commit that changed canDo from true to false
 cat > bisect_test.go <<EOF
 package bisect
 
